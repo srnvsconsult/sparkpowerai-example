@@ -1,5 +1,4 @@
-#FROM mldl-ipython
-
+#Use PowerAI base image (from github.com)
 FROM ipoddaribm/powerai-examples
 
 #Spark install
@@ -11,20 +10,31 @@ RUN wget -q http://d3kbcqa49mib13.cloudfront.net/spark-${APACHE_SPARK_VERSION}-b
 RUN tar -xf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
 	
 #Spark configuration
-#COPY rootfs/spark/core-site.xml /opt/hadoop-2.7.0/etc/hadoop/core-site.xml
-#COPY rootfs/spark/hdfs-site.xml /opt/hadoop-2.7.0/etc/hadoop/hdfs-site.xml
-#COPY rootfs/spark/mapred-site.xml /opt/hadoop-2.7.0/etc/hadoop/mapred-site.xml
-#COPY rootfs/spark/yarn-site.xml /opt/hadoop-2.7.0/etc/hadoop/yarn-site.xml
 COPY rootfs/spark/spark-env.sh /opt/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}/conf/spark-env.sh 
 COPY rootfs/spark/spark-defaults.conf /opt/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}/conf/spark-defaults.conf 
 COPY rootfs/spark/sparkrc /opt/sparkrc 
-COPY rootfs/spark/pyspark-notebook /opt/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}/bin/pyspark-notebook
 #COPY rootfs/spark/kernel.json /usr/local/share/jupyter/kernels/toree/kernel.json
 RUN mkdir -p /opt/DL/spark
 COPY rootfs/spark/examples /opt/DL/spark/examples
+#Add Stocator (https://github.com/SparkTC/stocator) to the Spark JARS path
+ADD stocator-1.0.9-SNAPSHOT-jar-with-dependencies.jar /opt/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}/jars/
 
-ADD conf.d/* /etc/supervisor/conf.d/
-
+#Ports for Spark
 EXPOSE 8080 4040 8893
+
+#Install ibmseti & Scikit-learn
+RUN pip install --upgrade pip && pip install ibmseti && pip install scikit-learn
+
+
+# To get spark master and slave running at startup
+WORKDIR /root
+RUN /bin/bash -c "rm -f /root/startjupyter.sh"
+ADD startjupyter.sh /root/
+ADD startspark.sh /root/ 
+ADD conf.d/spark.conf /etc/supervisor/conf.d/
+
+#add NIMBIX application
+COPY AppDef.json /etc/NAE/AppDef.json
+RUN curl --fail -X POST -d @/etc/NAE/AppDef.json https://api.jarvice.com/jarvice/validate
 
 CMD ["/usr/bin/supervisord", "-n","-c" ,"/etc/supervisor/supervisord.conf"]
