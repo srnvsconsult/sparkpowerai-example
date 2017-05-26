@@ -1,0 +1,12 @@
+#Java path
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-ppc64el
+
+#spark 2.1.0
+export SPARK_HOME=/opt/spark-2.1.0-bin-hadoop2.7
+export PATH=$PATH:$SPARK_HOME/bin
+export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.4-src.zip:$PYTHONPATH
+
+# CUDA environment
+export CUDA_HOME=/usr/local/cuda-8.0
+export PATH=$PATH:/usr/local/cuda-8.0/bin
+export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH
