@@ -15,7 +15,6 @@ COPY rootfs/spark/spark-defaults.conf /opt/spark-${APACHE_SPARK_VERSION}-bin-had
 COPY rootfs/spark/sparkrc /opt/sparkrc 
 #COPY rootfs/spark/kernel.json /usr/local/share/jupyter/kernels/toree/kernel.json
 RUN mkdir -p /opt/DL/spark
-COPY rootfs/spark/examples /opt/DL/spark/examples
 #Add Stocator (https://github.com/SparkTC/stocator) to the Spark JARS path
 ADD stocator-1.0.9-SNAPSHOT-jar-with-dependencies.jar /opt/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}/jars/
 
