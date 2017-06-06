@@ -24,6 +24,8 @@ EXPOSE 8080 4040 8893
 #Install ibmseti & Scikit-learn
 RUN pip install --upgrade pip && pip install ibmseti && pip install scikit-learn
 
+#Install findspark (automatically make a SparkContext available)
+RUN pip install --upgrade pip && pip install findspark
 
 # To get spark master and slave running at startup
 WORKDIR /root
