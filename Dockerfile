@@ -28,7 +28,7 @@ RUN pip install --upgrade pip && pip install ibmseti && pip install scikit-learn
 RUN pip install --upgrade pip && pip install findspark
 
 #Install Nano editor
-RUN apt-get install nano
+RUN apt-get install -y nano
 
 # To get spark master and slave running at startup
 WORKDIR /root
