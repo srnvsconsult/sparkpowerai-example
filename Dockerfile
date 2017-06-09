@@ -30,12 +30,16 @@ RUN pip install --upgrade pip && pip install findspark
 #Install Nano editor
 RUN apt-get install -y nano
 
-# To get spark master and slave running at startup
+# To get spark master and slave running at startup and open the Jupyter notebook servers in the $HOME directory
 WORKDIR /root
 RUN /bin/bash -c "rm -f /root/startjupyter.sh"
 ADD startjupyter.sh /root/
-ADD startspark.sh /root/ 
-ADD conf.d/spark.conf /etc/supervisor/conf.d/
+ADD startspark.sh /root/
+ENV HOME /home/nimbix
+RUN /bin/bash -c "rm -f /etc/supervisor/conf.d/caffe_jupyter.conf"
+RUN /bin/bash -c "rm -f /etc/supervisor/conf.d/tensorflow_jupyter.conf"
+RUN /bin/bash -c "rm -f /etc/supervisor/conf.d/torch_jupyter.conf"
+ADD conf.d/* /etc/supervisor/conf.d/
 
 #add NIMBIX application
 COPY AppDef.json /etc/NAE/AppDef.json
