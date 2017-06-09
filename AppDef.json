@@ -8,8 +8,12 @@
         "IBM POWER/Deep Learning"
     ],
     "machines": [
+        "np8c0",
+        "np8c1",
         "np8gk1",
-        "np8g1"
+        "np8gk4",
+        "np8g1",
+        "np8g4"
     ],
     "vault-types": [
         "FILE",
