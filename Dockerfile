@@ -27,6 +27,9 @@ RUN pip install --upgrade pip && pip install ibmseti && pip install scikit-learn
 #Install findspark (automatically make a SparkContext available)
 RUN pip install --upgrade pip && pip install findspark
 
+#Install Pandas
+RUN pip install --upgrade pip && pip install pandas
+
 #Install Nano editor
 RUN apt-get install -y nano
 
